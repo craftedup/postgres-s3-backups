@@ -14,12 +14,16 @@ const uploadToS3 = async ({ name, path }: { name: string, path: string }) => {
   const bucket = env.AWS_S3_BUCKET;
 
   const clientOptions: S3ClientConfig = {
-    region: env.AWS_S3_REGION
+    region: env.AWS_S3_REGION,
   }
 
   if (env.AWS_S3_ENDPOINT) {
     console.log(`Using custom endpoint: ${env.AWS_S3_ENDPOINT}`)
     clientOptions['endpoint'] = env.AWS_S3_ENDPOINT;
+  }
+
+  if (env.BUCKET_SUBFOLDER) {
+    name = env.BUCKET_SUBFOLDER + "/" + name;
   }
 
   const client = new S3Client(clientOptions);
